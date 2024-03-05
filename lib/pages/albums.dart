@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:convert';
 
 import 'package:codegame/pages/detailAlbums.dart';
@@ -31,7 +29,7 @@ class _AlbumsState extends State<Albums> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Albums'),
+        title: const Text('Albums'),
       ),
       body: FutureBuilder<List<Album>>(
         future: fetchAlbums(),
@@ -39,7 +37,7 @@ class _AlbumsState extends State<Albums> {
           if (snapshot.hasData) {
             return ListView.separated(
               itemCount: snapshot.data!.length,
-              separatorBuilder: (BuildContext context, int index) => Divider(),
+              separatorBuilder: (BuildContext context, int index) => const Divider(),
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
@@ -60,10 +58,25 @@ class _AlbumsState extends State<Albums> {
               },
             );
           } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("${snapshot.error}"),
+                  action: SnackBarAction(
+                    label: 'Réessayer',
+                    onPressed: () {
+                      setState(() {
+                        fetchAlbums();
+                      });
+                    },
+                  ),
+                ),
+              );
+            });
+            return const Center(child: Loader());
           }
 
-          return Center(child: Loader());
+          return const Center(child: Loader());
         },
       ),
     );
