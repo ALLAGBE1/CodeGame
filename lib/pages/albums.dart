@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Albums extends StatefulWidget {
-  const Albums({super.key});
+  const Albums({Key? key}) : super(key: key);
 
   @override
   State<Albums> createState() => _AlbumsState();
@@ -19,7 +19,18 @@ class _AlbumsState extends State<Albums> {
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
-      return jsonResponse.map((data) => Album.fromJson(data)).toList();
+      List<Album> albums = jsonResponse.map((data) => Album.fromJson(data)).toList();
+
+      for (var album in albums) {
+        final photosResponse =
+            await http.get(Uri.parse('https://jsonplaceholder.typicode.com/album/${album.id}/photos'));
+        if (photosResponse.statusCode == 200) {
+          List photosJson = json.decode(photosResponse.body);
+          album.setPhotos = photosJson.map((photo) => Photo.fromJson(photo)).toList();
+        }
+      }
+
+      return albums;
     } else {
       throw Exception('Erreur lors du chargement des albums');
     }
@@ -87,14 +98,38 @@ class Album {
   final int id;
   final int userId;
   final String title;
+  List<Photo> photos;
 
-  Album({required this.id, required this.userId, required this.title});
+  Album({required this.id, required this.userId, required this.title, required this.photos});
+
+  set setPhotos(List<Photo> value) {
+    photos = value;
+  }
 
   factory Album.fromJson(Map<String, dynamic> json) {
     return Album(
       id: json['id'],
       userId: json['userId'],
       title: json['title'],
+      photos: [],
+    );
+  }
+}
+
+class Photo {
+  final int id;
+  final String title;
+  final String url;
+  final int albumId;
+
+  Photo({required this.id, required this.title, required this.url, required this.albumId});
+
+  factory Photo.fromJson(Map<String, dynamic> json) {
+    return Photo(
+      id: json['id'],
+      title: json['title'],
+      url: json['url'],
+      albumId: json['albumId'],
     );
   }
 }

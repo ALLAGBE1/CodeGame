@@ -39,7 +39,7 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: album == null ? const Text('Charg  ement...') : Text('${album!.id}'),
+        title: album == null ? const Text('Chargement...') : Text('${album!.id}'),
       ),
       body: album == null
           ? const Center(child: Loader())
