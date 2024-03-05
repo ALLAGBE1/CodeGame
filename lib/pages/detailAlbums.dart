@@ -1,5 +1,5 @@
+import 'package:codegame/pages/albumDetailsPage.dart';
 import 'package:codegame/pages/albums.dart';
-import 'package:codegame/pages/detailPhoto.dart';
 import 'package:flutter/material.dart';
 
 class AlbumDetails extends StatelessWidget {
@@ -27,8 +27,25 @@ class AlbumDetails extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Titre: ${album.title}', style: const TextStyle(fontSize: 18)),
-              Text('ID de l\'utilisateur: ${album.userId}', style: const TextStyle(fontSize: 16)),
+              Row(
+                children: [
+                  Container(
+                    color: Colors.red,
+                    width: MediaQuery.sizeOf(context).width / 5,
+                    height: MediaQuery.sizeOf(context).height / 8,
+                    child: Container(),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Column(
+                    children: [
+                      Text('Titre: ${album.title}', style: const TextStyle(fontSize: 18)),
+                      Text('ID de l\'utilisateur: ${album.id}', style: const TextStyle(fontSize: 16)),
+                    ],
+                  )
+                ],
+              )
             ],
           ),
         ),

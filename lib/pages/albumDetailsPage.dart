@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:codegame/pages/albums.dart';
+import 'package:codegame/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -38,10 +39,10 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: album == null ? const Text('Chargement...') : Text('${album!.id}'),
+        title: album == null ? const Text('Charg  ement...') : Text('${album!.id}'),
       ),
       body: album == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: Loader())
           : Center(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -49,7 +50,16 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text('Titre: ${album!.title}', style: const TextStyle(fontSize: 18)),
-                    Text('ID de l\'utilisateur: ${album!.userId}', style: const TextStyle(fontSize: 16)),
+                    Text('ID de l\'utilisateur: ${album!.id}', style: const TextStyle(fontSize: 16)),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      color: Colors.green,
+                      width: MediaQuery.sizeOf(context).width / 2,
+                      height: MediaQuery.sizeOf(context).height / 5,
+                      child: Container(),
+                    ),
                   ],
                 ),
               ),

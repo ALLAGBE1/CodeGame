@@ -37,8 +37,9 @@ class _AlbumsState extends State<Albums> {
         future: fetchAlbums(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ListView.builder(
+            return ListView.separated(
               itemCount: snapshot.data!.length,
+              separatorBuilder: (BuildContext context, int index) => Divider(),
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
